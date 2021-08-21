@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_class/Firebase-Authentication/firebase_services.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseAuthentication extends StatefulWidget {
@@ -11,12 +12,13 @@ class FirebaseAuthentication extends StatefulWidget {
 
 class _FirebaseAuthenticationState extends State<FirebaseAuthentication> {
   final _formKey = GlobalKey<FormState>();
+  FirebaseService service = FirebaseService();
+  DatabaseReference db = FirebaseDatabase.instance.reference().child("Users");
   TextEditingController? _fname, _email, _password;
   bool isLoading = false, btnLoad = false;
 
   @override
   Widget build(BuildContext context) {
-    FirebaseService service = FirebaseService();
     return Scaffold(
       appBar: AppBar(title: Text('Firebase Authentication')),
       body: Center(
