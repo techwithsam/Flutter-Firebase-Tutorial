@@ -100,14 +100,29 @@ class _SingUpScreenState extends State<SingUpScreen> {
                               isLoading = true;
                             });
                             try {
-                              await service.signInwithGoogle();
+                              await service.signInwithGoogle().then(
+                                (value) {
+                                  User? result =
+                                      FirebaseAuth.instance.currentUser;
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          HomePage(uid: result!.uid),
+                                    ),
+                                  );
+                                },
+                              );
                               print(
                                   'Sign with Google completed - navigate to home screen');
-                            } catch (e) {
-                              if (e is FirebaseAuthException) {
-                                print(e.message!);
-                              } else
-                                print('$e');
+                            } on FirebaseAuthException catch (e) {
+                              if (e.code == 'email-already-in-use') {
+                                snackBar(
+                                    'The email address is already in use by another account.');
+                                print(e.message);
+                              } else {
+                                snackBar('${e.message}');
+                              }
                             }
                             setState(() {
                               isLoading = false;

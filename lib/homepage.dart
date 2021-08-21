@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Homepage'),
         actions: [
           IconButton(
             onPressed: () async {
@@ -52,7 +53,7 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           }
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         },
       ),
     );

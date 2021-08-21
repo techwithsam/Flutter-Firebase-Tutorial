@@ -1,12 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  String? name;
-  String? email;
-  String? imageUrl;
+  DatabaseReference db = FirebaseDatabase.instance.reference().child("Users");
 
   Future<String?> signInwithGoogle() async {
     try {
@@ -25,15 +24,14 @@ class FirebaseService {
       assert(user!.email != null);
       assert(user!.displayName != null);
       assert(user!.displayName != null);
-      name = user!.displayName;
-      email = user.email;
-      imageUrl = user.photoURL;
-      print(user.displayName);
-      print(user.email);
-      print(user.phoneNumber);
-      print(user.photoURL);
-      print(user.providerData);
-      print(user.uid);
+
+      db.child(user!.uid).set({
+        "uid": user.uid,
+        "email": user.email,
+        "fname": user.displayName,
+      }).then((value) {
+        print('Information saved to database');
+      });
 
       print('signInWithGoogle succeeded: $user');
       return 'signInWithGoogle succeeded: $user';
