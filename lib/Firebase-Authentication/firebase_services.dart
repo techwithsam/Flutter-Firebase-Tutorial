@@ -21,9 +21,6 @@ class FirebaseService {
       final UserCredential authResult =
           await _auth.signInWithCredential(credential);
       final User? user = authResult.user;
-      assert(user!.email != null);
-      assert(user!.displayName != null);
-      assert(user!.displayName != null);
 
       db.child(user!.uid).set({
         "uid": user.uid,

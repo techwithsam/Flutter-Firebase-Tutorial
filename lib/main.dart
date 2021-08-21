@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter & Firebase | everything you need to know',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        appBarTheme: AppBarTheme(elevation: 0),
       ),
       home: WelcomeScreen(),
     );
