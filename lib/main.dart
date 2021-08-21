@@ -1,4 +1,5 @@
 import 'package:firebase_class/homepage.dart';
+import 'package:firebase_class/welcome.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'Firebase-Authentication/firebase_auth.dart';
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/firebase-auth',
+      initialRoute: '/welcome',
       routes: AppRoute.routes,
     );
   }
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
 
 class AppRoute {
   static Map<String, Widget Function(BuildContext context)> routes = {
+    '/welcome': (_) => WelcomeScreen(),
     '/firebase-auth': (_) => FirebaseAuthentication(),
     '/homepage': (_) => HomePage(),
   };
