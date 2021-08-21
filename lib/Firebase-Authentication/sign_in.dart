@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_class/Firebase-Authentication/firebase_services.dart';
 import 'package:firebase_class/Firebase-Authentication/sign_up.dart';
@@ -66,7 +68,11 @@ class _SignInScreenState extends State<SignInScreen> {
                                           HomePage(uid: value.user!.uid),
                                     ),
                                   );
-                                });
+                                }).timeout(timeOut);
+                              } on SocketException catch (_) {
+                                snackBar(nointernet);
+                              } on TimeoutException catch (_) {
+                                snackBar(timeMsg);
                               } on FirebaseAuthException catch (e) {
                                 if (e.code == 'user-not-found') {
                                   snackBar('No user found for that email.');

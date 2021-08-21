@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_class/Firebase-Authentication/firebase_services.dart';
 import 'package:firebase_class/Firebase-Authentication/sign_in.dart';
@@ -67,7 +69,11 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                       ),
                                     );
                                   });
-                                });
+                                }).timeout(timeOut);
+                              } on SocketException catch (_) {
+                                snackBar(nointernet);
+                              } on TimeoutException catch (_) {
+                                snackBar(timeMsg);
                               } on FirebaseAuthException catch (e) {
                                 if (e.code == 'email-already-in-use') {
                                   snackBar(
@@ -112,9 +118,13 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                     ),
                                   );
                                 },
-                              );
+                              ).timeout(timeOut);
                               print(
                                   'Sign with Google completed - navigate to home screen');
+                            } on SocketException catch (_) {
+                              snackBar(nointernet);
+                            } on TimeoutException catch (_) {
+                              snackBar(timeMsg);
                             } on FirebaseAuthException catch (e) {
                               if (e.code == 'email-already-in-use') {
                                 snackBar(
@@ -207,4 +217,7 @@ class TextFieldd extends StatelessWidget {
   }
 }
 
+final Duration timeOut = Duration(seconds: 30);
+final String timeMsg = 'Request timeout. Kindly try again';
+final String nointernet = 'No active internet connection, Kindly try again!';
 final kStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
