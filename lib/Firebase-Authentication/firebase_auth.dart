@@ -18,9 +18,7 @@ class _FirebaseAuthenticationState extends State<FirebaseAuthentication> {
   Widget build(BuildContext context) {
     FirebaseService service = FirebaseService();
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Firebase Authentication'),
-      ),
+      appBar: AppBar(title: Text('Firebase Authentication')),
       body: Center(
         child: Form(
           key: _formKey,
@@ -43,7 +41,7 @@ class _FirebaseAuthenticationState extends State<FirebaseAuthentication> {
                               btnLoad = true;
                             });
                             try {
-                              await service.signInWithEmailAndPassword(
+                              await service.signUpWithEmailAndPassword(
                                   _email!.text, _password!.text);
                             } on FirebaseAuthException catch (e) {
                               print(e);
@@ -61,7 +59,7 @@ class _FirebaseAuthenticationState extends State<FirebaseAuthentication> {
                             });
                           }
                         },
-                        child: Text('Sign with email and password'))
+                        child: Text('Sign up | email & password.'))
                     : Center(
                         child: SizedBox(
                           height: 30,
