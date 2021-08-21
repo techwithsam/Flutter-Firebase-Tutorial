@@ -53,7 +53,6 @@ class _SignInScreenState extends State<SignInScreen> {
                               setState(() {
                                 _isLoading = true;
                               });
-
                               try {
                                 await FirebaseAuth.instance
                                     .signInWithEmailAndPassword(
