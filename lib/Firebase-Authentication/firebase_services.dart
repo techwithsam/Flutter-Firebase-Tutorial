@@ -63,26 +63,6 @@ class FirebaseService {
     }
   }
 
-  Future<String?> signUpWithEmailAndPassword(
-      String email, String password) async {
-    try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: email);
-
-      print(userCredential);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-        return 'No user found for that email.';
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-        return 'Wrong password provided for that user.';
-      } else
-        print(e.message);
-      return e.message;
-    }
-  }
-
   Future<void> signOutFromGoogle() async {
     await _googleSignIn.signOut();
     await _auth.signOut();
