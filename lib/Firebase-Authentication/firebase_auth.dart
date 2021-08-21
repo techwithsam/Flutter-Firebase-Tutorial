@@ -59,7 +59,9 @@ class _FirebaseAuthenticationState extends State<FirebaseAuthentication> {
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => HomePage()),
+                                        builder: (context) =>
+                                            HomePage(uid: value.user!.uid),
+                                      ),
                                     );
                                   });
                                 });

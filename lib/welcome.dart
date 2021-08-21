@@ -36,12 +36,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     Future.delayed(Duration(seconds: 5), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (_) =>
-              result != null ? HomePage() : FirebaseAuthentication(),
+          builder: (_) => result != null
+              ? HomePage(uid: result!.uid)
+              : FirebaseAuthentication(),
         ),
       );
     });
-    // result != null ? HomePage(uid: result.uid) : SignUp(),
   }
 
   @override
