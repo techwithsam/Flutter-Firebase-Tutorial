@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_class/Firebase-Authentication/firebase_auth.dart';
+import 'package:firebase_class/Firebase-Authentication/sign_up.dart';
 import 'package:firebase_class/homepage.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +38,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         MaterialPageRoute(
           builder: (_) => result != null
               ? HomePage(uid: result!.uid)
-              : FirebaseAuthentication(),
+              : SingUpScreen(),
         ),
       );
     });

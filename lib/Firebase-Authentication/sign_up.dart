@@ -1,17 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_class/Firebase-Authentication/firebase_services.dart';
+import 'package:firebase_class/Firebase-Authentication/sign_in.dart';
 import 'package:firebase_class/homepage.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-class FirebaseAuthentication extends StatefulWidget {
-  FirebaseAuthentication({Key? key}) : super(key: key);
+class SingUpScreen extends StatefulWidget {
+  SingUpScreen({Key? key}) : super(key: key);
 
   @override
-  _FirebaseAuthenticationState createState() => _FirebaseAuthenticationState();
+  _SingUpScreenState createState() => _SingUpScreenState();
 }
 
-class _FirebaseAuthenticationState extends State<FirebaseAuthentication> {
+class _SingUpScreenState extends State<SingUpScreen> {
   final _formKey = GlobalKey<FormState>();
   FirebaseService service = FirebaseService();
   DatabaseReference db = FirebaseDatabase.instance.reference().child("Users");
@@ -31,6 +32,8 @@ class _FirebaseAuthenticationState extends State<FirebaseAuthentication> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Center(child: Text('Sign Up Page', style: kStyle)),
+                  SizedBox(height: 20),
                   TextFieldd(_fname, 'Full name'),
                   SizedBox(height: 10),
                   TextFieldd(_email, 'Email'),
@@ -70,6 +73,8 @@ class _FirebaseAuthenticationState extends State<FirebaseAuthentication> {
                                   snackBar(
                                       'The email address is already in use by another account.');
                                   print(e.message);
+                                } else {
+                                  snackBar('${e.message}');
                                 }
                               }
                               setState(() {
@@ -108,7 +113,7 @@ class _FirebaseAuthenticationState extends State<FirebaseAuthentication> {
                               isLoading = false;
                             });
                           },
-                          child: Text('Sign in with google'),
+                          child: Text('Sign up with google'),
                         )
                       : SizedBox(
                           height: 20,
@@ -117,6 +122,18 @@ class _FirebaseAuthenticationState extends State<FirebaseAuthentication> {
                             strokeWidth: 2.2,
                           ),
                         ),
+                  SizedBox(height: 12),
+                  TextButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => SignInScreen(),
+                        ),
+                      );
+                    },
+                    icon: Icon(Icons.arrow_forward),
+                    label: Text('Sign in'),
+                  )
                 ],
               ),
             ),
@@ -174,3 +191,5 @@ class TextFieldd extends StatelessWidget {
     );
   }
 }
+
+final kStyle = TextStyle(fontSize: 20, fontWeight: FontWeight.bold);

@@ -1,6 +1,6 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'Firebase-Authentication/firebase_auth.dart';
+import 'Firebase-Authentication/sign_up.dart';
 import 'Firebase-Authentication/firebase_services.dart';
 
 class HomePage extends StatefulWidget {
@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => FirebaseAuthentication(),
+                    builder: (context) => SingUpScreen(),
                   ),
                 );
               });
