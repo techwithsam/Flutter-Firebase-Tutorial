@@ -26,6 +26,7 @@ class FirebaseService {
         "uid": user.uid,
         "email": user.email,
         "fname": user.displayName,
+        "pic": user.photoURL,
       }).then((value) {
         print('Information saved to database');
       });

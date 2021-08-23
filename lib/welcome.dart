@@ -38,6 +38,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
         MaterialPageRoute(
           builder: (_) => result != null
               ? HomePage(uid: result!.uid)
+              
               : SingUpScreen(),
         ),
       );

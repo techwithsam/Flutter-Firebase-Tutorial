@@ -50,6 +50,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                 btnLoad = true;
                               });
                               try {
+                                  //  await FirebaseAuth.instance.
                                 await FirebaseAuth.instance
                                     .createUserWithEmailAndPassword(
                                         email: _email!.text,
@@ -59,6 +60,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
                                     "uid": value.user!.uid,
                                     "email": _email!.text,
                                     "fname": _fname!.text,
+                                 "pic": "pic",
                                   }).then((res) {
                                     btnLoad = false;
                                     Navigator.pushReplacement(
