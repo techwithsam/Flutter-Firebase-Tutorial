@@ -60,9 +60,6 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-
-
-
 class Home extends StatefulWidget {
   Home({Key? key, this.title}) : super(key: key);
   final String? title;
@@ -78,36 +75,38 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title!),
-        ),
-        body: FutureBuilder(
-            future: dbRef.once(),
-            builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
-              if (snapshot.hasData) {
-                lists.clear();
-                Map<dynamic, dynamic> values = snapshot.data!.value;
-                values.forEach((key, values) {
-                  lists.add(values);
-                });
-                return new ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: lists.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Card(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text("Name: " + lists[index]["name"]),
-                            Text("Age: " + lists[index]["age"]),
-                            Text("Type: " + lists[index]["type"]),
-                          ],
-                        ),
-                      );
-                    });
-              }
-              return CircularProgressIndicator();
-            }));
+      appBar: AppBar(
+        title: Text(widget.title!),
+      ),
+      body: FutureBuilder(
+        future: dbRef.once(),
+        builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
+          if (snapshot.hasData) {
+            lists.clear();
+            Map<dynamic, dynamic> values = snapshot.data!.value;
+            values.forEach((key, values) {
+              lists.add(values);
+            });
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: lists.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text("Name: " + lists[index]["name"]),
+                      Text("Age: " + lists[index]["age"]),
+                      Text("Type: " + lists[index]["type"]),
+                    ],
+                  ),
+                );
+              },
+            );
+          }
+          return CircularProgressIndicator();
+        },
+      ),
+    );
   }
 }
-
