@@ -1,3 +1,4 @@
+import 'package:firebase_class/Firebase-Firestore/firestore_data.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'Firebase-Authentication/sign_up.dart';
@@ -49,6 +50,16 @@ class _HomePageState extends State<HomePage> {
                   Text("Full Name: " + snapshot.data!.value["fname"]),
                   Text("User Email: " + snapshot.data!.value["email"]),
                   Text("User ID: " + snapshot.data!.value["uid"]),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => FirestoreDataState(),
+                          ),
+                        );
+                      },
+                      child: Text('data'))
                 ],
               ),
             );

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:firebase_class/Firebase-Authentication/sign_up.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +59,8 @@ class _UpdateDatainDatabaseState extends State<UpdateDatainDatabase> {
                                 });
                               }
                             },
-                            child: Text('Update user information'),)
+                            child: Text('Update user information'),
+                          )
                         : Center(
                             child: SizedBox(
                               height: 30,
