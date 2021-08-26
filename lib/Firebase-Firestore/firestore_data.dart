@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_class/Firebase-Storage/upload_img.dart';
 import 'package:flutter/material.dart';
 
 class FirestoreDataState extends StatefulWidget {
@@ -18,7 +19,18 @@ class __FirestoreDataStateState extends State<FirestoreDataState> {
     final Stream<QuerySnapshot> _dataStream =
         FirebaseFirestore.instance.collection('products').snapshots();
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title: Text('Firestore'), actions: [
+        IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => UploadImage1(),
+                ),
+              );
+            },
+            icon: Icon(Icons.add)),
+      ]),
       body: StreamBuilder<QuerySnapshot>(
         stream: _dataStream,
         builder: (context, snapshot) {
