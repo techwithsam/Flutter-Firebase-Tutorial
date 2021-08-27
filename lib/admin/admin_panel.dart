@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_class/Firebase-Authentication/sign_up.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -129,7 +128,7 @@ class _AdminPanelState extends State<AdminPanel> {
                                   .toString()
                                   .substring(_image.toString().lastIndexOf("/"),
                                       _image.toString().lastIndexOf("."))
-                                  .replaceAll("/", ""); 
+                                  .replaceAll("/", "");
                               TaskSnapshot addImg = await ref
                                   .child("prdImages/$imgName")
                                   .putFile(_image!);
@@ -171,7 +170,7 @@ class _AdminPanelState extends State<AdminPanel> {
                                 });
                                 try {
                                   await FirebaseFirestore.instance
-                                      .collection("new_products")
+                                      .collection("items")
                                       .add({
                                     "name": _pdName!.text,
                                     "description": _pdDes!.text,
@@ -331,7 +330,10 @@ class _AdminPanelState extends State<AdminPanel> {
           Row(
             children: [
               GestureDetector(
-                onTap: () => openGallery(),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  openGallery();
+                },
                 child: Container(
                   padding: EdgeInsets.only(left: 12),
                   child: Column(
@@ -345,7 +347,10 @@ class _AdminPanelState extends State<AdminPanel> {
               ),
               SizedBox(width: 14),
               GestureDetector(
-                onTap: () => openGallery(),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  openGallery();
+                },
                 child: Container(
                   padding: EdgeInsets.only(left: 12),
                   child: Column(
