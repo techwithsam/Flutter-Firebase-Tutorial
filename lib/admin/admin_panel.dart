@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_class/Firebase-Authentication/sign_up.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AdminPanel extends StatefulWidget {
   AdminPanel({Key? key}) : super(key: key);
@@ -15,7 +17,33 @@ class AdminPanel extends StatefulWidget {
 class _AdminPanelState extends State<AdminPanel> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController? _pdName, _pdDes, _pdActPrice, _pdDisPrice, _pdImg;
-  bool _btnLoad = false, _shwprw = false;
+  bool _btnLoad = false, _shwprw = false, isLoading = false;
+  File? _image;
+  final picker = ImagePicker();
+
+  Future<void> openGallery() async {
+    var image = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      if (image != null) {
+        _image = File(image.path);
+        print(_image);
+      } else {
+        snackBar('No image selected.');
+      }
+    });
+  }
+
+  Future<void> openCamera() async {
+    var image = await picker.pickImage(source: ImageSource.camera);
+    setState(() {
+      if (image != null) {
+        _image = File(image.path);
+        print(_image);
+      } else {
+        snackBar('No image captured.');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +103,7 @@ class _AdminPanelState extends State<AdminPanel> {
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
+                      isScrollControlled: true,
                       builder: (context) {
                         return imagePick();
                       },
@@ -82,6 +111,46 @@ class _AdminPanelState extends State<AdminPanel> {
                   },
                   child: Text('Select Image to upload'),
                 ),
+                SizedBox(height: 10),
+                _image == null
+                    ? Text('No image selected.')
+                    : Image.file(_image!, height: 300),
+                SizedBox(height: 10),
+                !isLoading
+                    ? _image != null
+                        ? ElevatedButton(
+                            child: Text("Upload Image"),
+                            onPressed: () async {
+                              setState(() {
+                                this.isLoading = true;
+                              });
+                              Reference ref = FirebaseStorage.instance.ref();
+                              String imgName = _image!
+                                  .toString()
+                                  .substring(_image.toString().lastIndexOf("/"),
+                                      _image.toString().lastIndexOf("."))
+                                  .replaceAll("/", ""); 
+                              TaskSnapshot addImg = await ref
+                                  .child("prdImages/$imgName")
+                                  .putFile(_image!);
+                              if (addImg.state == TaskState.success) {
+                                final String imgUrl =
+                                    await addImg.ref.getDownloadURL();
+                                setState(() {
+                                  this.isLoading = false;
+                                  _pdImg!.text = imgUrl;
+                                });
+                                snackBar("Image uploaded");
+                              }
+                            })
+                        : Center()
+                    : SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.2,
+                        ),
+                      ),
                 SizedBox(height: 20),
                 _btnLoad
                     ? SizedBox(
@@ -253,34 +322,42 @@ class _AdminPanelState extends State<AdminPanel> {
 
   imagePick() {
     return Container(
-      padding: EdgeInsets.all(8),
-      child: Row(
+      padding: EdgeInsets.all(10),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            padding: EdgeInsets.only(left: 12),
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: 34,
-                  child: Icon(Icons.photo_album),
+          Text('Pick your choice'),
+          SizedBox(height: 6),
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () => openGallery(),
+                child: Container(
+                  padding: EdgeInsets.only(left: 12),
+                  child: Column(
+                    children: [
+                      CircleAvatar(radius: 24, child: Icon(Icons.photo_album)),
+                      SizedBox(height: 8),
+                      Text('Gallery'),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 8),
-                Text('Gallery '),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 12),
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: 34,
-                  child: Icon(Icons.photo_album),
+              ),
+              SizedBox(width: 14),
+              GestureDetector(
+                onTap: () => openGallery(),
+                child: Container(
+                  padding: EdgeInsets.only(left: 12),
+                  child: Column(
+                    children: [
+                      CircleAvatar(radius: 24, child: Icon(Icons.camera_alt)),
+                      SizedBox(height: 8),
+                      Text('Camera'),
+                    ],
+                  ),
                 ),
-                SizedBox(height: 8),
-                Text('Camera '),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
