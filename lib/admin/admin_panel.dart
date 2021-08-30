@@ -47,7 +47,13 @@ class _AdminPanelState extends State<AdminPanel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Admin Panel'), centerTitle: true),
+      appBar: AppBar(
+        title: Text('Admin Panel'),
+        centerTitle: true,
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.edit))
+        ],
+      ),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -135,6 +141,7 @@ class _AdminPanelState extends State<AdminPanel> {
                               if (addImg.state == TaskState.success) {
                                 final String imgUrl =
                                     await addImg.ref.getDownloadURL();
+                                print(imgUrl);
                                 setState(() {
                                   this.isLoading = false;
                                   _pdImg!.text = imgUrl;
@@ -170,7 +177,7 @@ class _AdminPanelState extends State<AdminPanel> {
                                 });
                                 try {
                                   await FirebaseFirestore.instance
-                                      .collection("items")
+                                      .collection("new_products")
                                       .add({
                                     "name": _pdName!.text,
                                     "description": _pdDes!.text,
