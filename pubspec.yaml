@@ -34,6 +34,8 @@ dependencies:
   firebase_database: ^7.2.0
   cloud_firestore: ^2.5.0
   firebase_storage: ^10.0.3
+  firebase_crashlytics: ^2.2.1
+  firebase_messaging: ^10.0.6
   image_picker: ^0.8.3+3
 
 dev_dependencies:

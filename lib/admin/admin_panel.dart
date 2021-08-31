@@ -47,7 +47,13 @@ class _AdminPanelState extends State<AdminPanel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Admin Panel'), centerTitle: true),
+      appBar: AppBar(
+        title: Text('Admin Panel'),
+        centerTitle: true,
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.edit))
+        ],
+      ),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -128,13 +134,14 @@ class _AdminPanelState extends State<AdminPanel> {
                                   .toString()
                                   .substring(_image.toString().lastIndexOf("/"),
                                       _image.toString().lastIndexOf("."))
-                                  .replaceAll("/", ""); 
+                                  .replaceAll("/", "");
                               TaskSnapshot addImg = await ref
                                   .child("prdImages/$imgName")
                                   .putFile(_image!);
                               if (addImg.state == TaskState.success) {
                                 final String imgUrl =
                                     await addImg.ref.getDownloadURL();
+                                print(imgUrl);
                                 setState(() {
                                   this.isLoading = false;
                                   _pdImg!.text = imgUrl;
@@ -330,7 +337,10 @@ class _AdminPanelState extends State<AdminPanel> {
           Row(
             children: [
               GestureDetector(
-                onTap: () => openGallery(),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  openGallery();
+                },
                 child: Container(
                   padding: EdgeInsets.only(left: 12),
                   child: Column(
@@ -344,7 +354,10 @@ class _AdminPanelState extends State<AdminPanel> {
               ),
               SizedBox(width: 14),
               GestureDetector(
-                onTap: () => openGallery(),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  openGallery();
+                },
                 child: Container(
                   padding: EdgeInsets.only(left: 12),
                   child: Column(
