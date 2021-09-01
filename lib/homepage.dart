@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_class/admin/admin_panel.dart';
 import 'package:firebase_class/dropdowns.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'Firebase-Authentication/sign_up.dart';
 import 'Firebase-Authentication/firebase_services.dart';
@@ -17,7 +19,117 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   FirebaseService service = FirebaseService();
+  String? title, body, img, btnName;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final dbRef = FirebaseDatabase.instance.reference().child("Users");
+
+  Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage event) async {
+    await Firebase.initializeApp();
+
+    if (event.data == null && event.data.isEmpty) {
+      return null;
+    } else {
+      var message = event.data;
+      title = message["title"];
+      body = message["body"];
+      img = message["image"];
+      btnName = message["btnName"];
+    }
+  }
+
+  _getToken() {
+    _firebaseMessaging.getToken().then((token) => print('Token $token ***'));
+  }
+
+  Future<void> _getMessage() async {
+    await FirebaseMessaging.instance.getInitialMessage().then((value) {
+      if (value == null) {
+        return null;
+      } else {
+        var message = value.data;
+        title = message["title"];
+        body = message["body"];
+        img = message["image"];
+        btnName = message["btnName"];
+
+        if (body == null || title!.isEmpty && body!.isEmpty) {
+          return Center();
+        } else {
+          print(value.data);
+          return Text('c'); // perform your miracle
+        }
+      }
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      if (event.data.isEmpty) {
+        return null;
+      } else {
+        var message = event.data;
+        title = message["title"];
+        body = message["body"];
+        img = message["image"];
+        btnName = message["btnName"];
+
+        if (body == null || title!.isEmpty && body!.isEmpty) {
+          return null;
+        } else {
+          print(event.data);
+          return showAboutDialog(context: context); // perform your miracle
+        }
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage event) {
+      if (event.data.isEmpty) {
+        return null;
+      } else {
+        var message = event.data;
+        title = message["title"];
+        body = message["body"];
+        img = message["image"];
+        btnName = message["btnName"];
+
+        if (body == null || title!.isEmpty && body!.isEmpty) {
+          return null;
+        } else {
+          print(event.data);
+          return showAboutDialog(context: context); // perform your miracle
+        }
+      }
+    });
+
+    FirebaseMessaging.onBackgroundMessage((event) async {
+      if (event.data.isEmpty) {
+        Center();
+      } else {
+        var message = event.data;
+        title = message["title"];
+        body = message["body"];
+        img = message["image"];
+        btnName = message["btnName"];
+
+        if (body == null || title!.isEmpty && body!.isEmpty) {
+          Center();
+        } else {
+          print(event.data);
+          showAboutDialog(context: context); // perform your miracle
+        }
+      }
+      Center();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getToken();
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+    _getMessage();
+    _firebaseMessaging.requestPermission(alert: true, badge: true, sound: true);
+    _firebaseMessaging.setForegroundNotificationPresentationOptions(
+        alert: true, badge: true, sound: true);
+  }
 
   @override
   Widget build(BuildContext context) {
