@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_class/Firebase-Firestore/firestore_data.dart';
 import 'package:firebase_class/admin/admin_panel.dart';
+import 'package:firebase_class/dropdowns.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'Firebase-Authentication/sign_up.dart';
@@ -38,6 +38,21 @@ class _HomePageState extends State<HomePage> {
           icon: Icon(Icons.admin_panel_settings),
         ),
         actions: [
+          IconButton(
+            onPressed: () async {
+              await service.signOutFromGoogle().then(
+                (value) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DropDownExample(),
+                    ),
+                  );
+                },
+              );
+            },
+            icon: Icon(Icons.pin_drop),
+          ),
           IconButton(
             onPressed: () async {
               await service.signOutFromGoogle().then(
@@ -180,8 +195,7 @@ class _HomePageState extends State<HomePage> {
           );
         },
       ),
-     
-     
+
       // body: FutureBuilder(
       //   future: dbRef.child(widget.uid).once(),
       //   builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
