@@ -19,14 +19,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   FirebaseService service = FirebaseService();
-  String? title, body, img, btnName;
+  String? title, body, img, btnName, action;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final dbRef = FirebaseDatabase.instance.reference().child("Users");
 
   Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage event) async {
     await Firebase.initializeApp();
 
-    if (event.data == null && event.data.isEmpty) {
+    if (event.data.isEmpty) {
       return null;
     } else {
       var message = event.data;
@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
       body = message["body"];
       img = message["image"];
       btnName = message["btnName"];
+      action = message["action"];
     }
   }
 
@@ -51,12 +52,13 @@ class _HomePageState extends State<HomePage> {
         body = message["body"];
         img = message["image"];
         btnName = message["btnName"];
+        action = message["action"];
 
         if (body == null || title!.isEmpty && body!.isEmpty) {
           return Center();
         } else {
-          print(value.data);
-          return Text('c'); // perform your miracle
+          print('Value for initial message: ${value.data}');
+          return showD(); // perform your miracle
         }
       }
     });
@@ -70,12 +72,13 @@ class _HomePageState extends State<HomePage> {
         body = message["body"];
         img = message["image"];
         btnName = message["btnName"];
+        action = message["action"];
 
         if (body == null || title!.isEmpty && body!.isEmpty) {
           return null;
         } else {
-          print(event.data);
-          return showAboutDialog(context: context); // perform your miracle
+          print('On message  - ${event.data}');
+          showD(); // perform your miracle
         }
       }
     });
@@ -89,12 +92,13 @@ class _HomePageState extends State<HomePage> {
         body = message["body"];
         img = message["image"];
         btnName = message["btnName"];
+        action = message["action"];
 
         if (body == null || title!.isEmpty && body!.isEmpty) {
           return null;
         } else {
-          print(event.data);
-          return showAboutDialog(context: context); // perform your miracle
+          print('onMessageOpenedApp ${event.data}');
+          showD(); // perform your miracle
         }
       }
     });
@@ -108,16 +112,42 @@ class _HomePageState extends State<HomePage> {
         body = message["body"];
         img = message["image"];
         btnName = message["btnName"];
+        action = message["action"];
 
         if (body == null || title!.isEmpty && body!.isEmpty) {
           Center();
         } else {
-          print(event.data);
-          showAboutDialog(context: context); // perform your miracle
+          print('onBackgroundMessage ${event.data}');
+          showD(); // perform your miracle
         }
       }
       Center();
     });
+  }
+
+  showD() {
+    return showDialog(
+      context: context,
+      // barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('$title'),
+          content: Text('$body'),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  if (action == 'close') {
+                    Navigator.of(context).pop();
+                  } else {
+                    print('something else!');
+                  }
+                },
+                child: Text('$btnName')),
+            TextButton(onPressed: () {}, child: Text('Cancel')),
+          ],
+        );
+      },
+    );
   }
 
   @override
