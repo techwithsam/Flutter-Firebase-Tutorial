@@ -13,7 +13,7 @@ class UpdateDatainDatabase extends StatefulWidget {
 
 class _UpdateDatainDatabaseState extends State<UpdateDatainDatabase> {
   final _formKey = GlobalKey<FormState>();
-  DatabaseReference db = FirebaseDatabase.instance.reference().child("Users");
+  DatabaseReference db = FirebaseDatabase.instance.ref().child("Users");
   TextEditingController? _fname;
   bool btnLoad = false;
 

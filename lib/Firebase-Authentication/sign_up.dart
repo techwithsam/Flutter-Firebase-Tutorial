@@ -17,7 +17,7 @@ class SingUpScreen extends StatefulWidget {
 class _SingUpScreenState extends State<SingUpScreen> {
   final _formKey = GlobalKey<FormState>();
   FirebaseService service = FirebaseService();
-  DatabaseReference db = FirebaseDatabase.instance.reference().child("Users");
+  DatabaseReference db = FirebaseDatabase.instance.ref().child("Users");
   TextEditingController? _fname, _email, _password;
   bool isLoading = false, btnLoad = false;
 

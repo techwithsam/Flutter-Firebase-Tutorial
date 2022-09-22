@@ -9,7 +9,7 @@ class RetrieveData extends StatefulWidget {
 }
 
 class _RetrieveDataState extends State<RetrieveData> {
-  final dbRef = FirebaseDatabase.instance.reference().child("pets");
+  final dbRef = FirebaseDatabase.instance.ref().child("pets");
   List<Map<dynamic, dynamic>> lists = [];
 
   @override
@@ -18,10 +18,10 @@ class _RetrieveDataState extends State<RetrieveData> {
       appBar: AppBar(title: Text('Retrieve Data - Database')),
       body: FutureBuilder(
         future: dbRef.once(),
-        builder: (context, AsyncSnapshot<DataSnapshot> snapshot) {
+        builder: (context, AsyncSnapshot<DatabaseEvent> snapshot) {
           if (snapshot.hasData) {
             lists.clear();
-            Map<dynamic, dynamic> values = snapshot.data!.value;
+            Map<dynamic, dynamic> values = snapshot.data!.snapshot.value as Map;
             values.forEach((key, values) {
               lists.add(values);
             });

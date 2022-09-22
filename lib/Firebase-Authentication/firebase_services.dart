@@ -5,9 +5,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 class FirebaseService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  DatabaseReference db = FirebaseDatabase.instance.reference().child("Users");
+  DatabaseReference db = FirebaseDatabase.instance.ref().child("Users");
 
-  Future<String?> signInwithGoogle() async {
+  Future<String> signInwithGoogle() async {
     try {
       final GoogleSignInAccount? googleSignInAccount =
           await _googleSignIn.signIn();
@@ -35,7 +35,7 @@ class FirebaseService {
       return 'signInWithGoogle succeeded: $user';
     } on FirebaseAuthException catch (e) {
       print(e.message);
-      // throw e;
+      throw e;
     }
   }
 

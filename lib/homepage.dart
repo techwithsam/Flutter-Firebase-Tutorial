@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   FirebaseService service = FirebaseService();
   String? title, body, img, btnName, action;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
-  final dbRef = FirebaseDatabase.instance.reference().child("Users");
+  final dbRef = FirebaseDatabase.instance.ref().child("Users");
 
   Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage event) async {
     await Firebase.initializeApp();

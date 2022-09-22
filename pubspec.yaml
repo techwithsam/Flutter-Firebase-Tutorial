@@ -31,11 +31,11 @@ dependencies:
   firebase_core: ^1.5.0
   firebase_auth: ^3.0.2
   google_sign_in: ^5.0.7
-  firebase_database: ^7.2.0
-  cloud_firestore: ^2.5.0
+  firebase_database: ^9.1.4
+  cloud_firestore: ^3.4.8
   firebase_storage: ^10.0.3
   firebase_crashlytics: ^2.2.1
-  firebase_messaging: ^10.0.6
+  firebase_messaging: ^13.0.2
   image_picker: ^0.8.3+3
 
 dev_dependencies:
